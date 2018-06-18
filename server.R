@@ -24,10 +24,11 @@ shinyServer(function(input, output, session) {
   ### Programmes de la mission.
   programmes = reactive({
     rap_encours = rap[[input$exercice]]
-    code_pgm = unique(rap_encours$COD_PGM[rap_encours$Mission == mission()])
-    code_pgm = code_pgm[code_pgm!= '']
-    nom_pgm = unique(rap_encours$Programme[rap_encours$COD_PGM %in%code_pgm])
-    return(list(code_pgm = code_pgm, nom_pgm = nom_pgm))
+    code_pgm = rap_encours[rap_encours$Mission == mission(),c('COD_PGM', 'Programme')]
+
+    code_pgm = unique(code_pgm)
+    code_pgm= code_pgm[code_pgm$COD_PGM != '',]
+    return(list(code_pgm = code_pgm$COD_PGM, nom_pgm = code_pgm$Programme))
   })
   
   # Menu déroulant mission, adaptation après sélection de l'exercice.
