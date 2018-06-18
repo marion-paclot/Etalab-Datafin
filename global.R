@@ -1,11 +1,4 @@
-# library(shiny)
-# library(grid)
-# library(gridExtra)
-# library(plyr)
-# library(Cairo)
-# library(plotly)
-# library(ggplot2)
-# library(scales)
+# Préparation des jeux de données
 
 options(scipen = 999)
 
@@ -20,11 +13,24 @@ lire_liste_fichiers = function(fichier){
     } else{
       donnees = read.csv2(fichier, stringsAsFactors = F, dec = ",")
     }
+  
   for (c in colnames(donnees)){
     donnees[,c] = gsub('([0-9]+) ([0-9]+)', '\\1\\2', donnees[,c])
     donnees[,c] = gsub('([0-9]+) ([0-9]+)', '\\1\\2', donnees[,c])
     donnees[,c] = gsub('([0-9]+) ([0-9]+)', '\\1\\2', donnees[,c])
-    }
+  }
+
+  # Imputation de COD_PGM quand nom disponible alors que numéro.indicateur est présent.
+  if (all(c('COD_PGM', 'Numéro.indicateur') %in% colnames(donnees))){
+    donnees[, 'COD_PGM'] = ifelse(donnees[, 'COD_PGM'] ==  '', 
+                                  gsub('([A-Z]+[0-9]+).*', '\\1', donnees[,'Numéro.indicateur']), 
+                                  donnees[, 'COD_PGM'])
+    
+    dico = unique(donnees[, c('COD_PGM', 'Programme')])
+    dico = dico[dico$Programme != '',]
+    donnees[, 'Programme'] = dico[match(donnees[, 'COD_PGM'], dico[, 'COD_PGM']), 'Programme']
+  }
+  
   return(assign(fichier, donnees))
 }
 
