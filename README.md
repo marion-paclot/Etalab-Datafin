@@ -10,8 +10,8 @@ Le répertoire contient un dossier de données, organisé en sous-dossiers par t
 - lorsque le fichier contenait initialement une forme d'en-tête, avec quelques lignes vides, ajout de cet en-tête dans tous les fichiers ne le contenant pas.
 
 Par ailleurs, on a trois scripts R : 
-- un script *global.R* permettant de préparer les données, à faire tourner préalablement
+- un script *global.R* permettant de charger les données etles packages.
 - un script *ui.R* correspondant à l'interface graphique de l'application
 - un script *server.R* correspondant au filtrage des données avant affichage.
 
-Pour faire tourner le code localement, commencer par exécuter le script global, puis cliquer sur *run app*
+Le bouton Run App permet de lancer l'application.
