@@ -1,6 +1,4 @@
-# Tjs sauver les codes en UTF8, sinon erreurs
-
-options(shiny.usecairo=T)
+# UI Application Datafin données financières de l'Etat
 
 shinyUI(fluidPage(
   
@@ -10,21 +8,20 @@ shinyUI(fluidPage(
   fluidRow(
     
     # Choix d'une année, d'une mission. Affichage en gros
-    column(4,
+    column(3,
            selectizeInput('exercice', "Sélection d'un exercice",
                           choices = annees_col_balance, 
                           selected = '', multiple = FALSE,
-                          options = NULL)
+                          options = NULL, width = "100%")
            ,
            selectizeInput('mission', "Sélection d'une mission",
-                          choices = NULL, multiple = FALSE)
+                          choices = NULL, multiple = FALSE, width = "100%")
     ),
-    column(8, 
+    column(7, 
            h4('Liste des programmes associés à la mission'),
            h2(verbatimTextOutput("liste_programmes")),
            downloadButton("downloadData", label = "Téléchargement .xls"))
     ),
-  
   mainPanel(width = 12,
             tabsetPanel(type = 'tabs',
                         tabPanel('CGE', br(), dataTableOutput('donnees_cge')),

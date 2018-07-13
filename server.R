@@ -1,11 +1,4 @@
-library(shiny)
-library(datasets)
-library(grid)
-library(gridExtra)
-library(plyr)
-library(XLConnect)
-library(RODBC)
-library(stringi)
+# Serveur Application Datafin données financières de l'Etat
 
 shinyServer(function(input, output, session) {
   
@@ -122,17 +115,15 @@ shinyServer(function(input, output, session) {
   
   # Téléchargement des données
   output$downloadData <- downloadHandler(
-    filename = function(){
+    filename = function() {
       m = stri_trans_general(mission(), "Latin-ASCII")
       m = gsub(',', ' ', m)
       m = gsub('\\s+', ' ', m)
       paste0(m, '_', exercice(), '.xlsx')
-      },
-    
+    },
     content = function(file) {
-      fname <- paste0(file,".xlsx")
-      wb <- loadWorkbook(fname,create = TRUE)
-      
+      wb <- loadWorkbook(file,create = TRUE)
+
       createSheet(wb,"CGE")
       writeWorksheet(wb,data = donnees_filtrees()[['donnees_cge']], sheet = "CGE")
       setColumnWidth(wb, sheet = "CGE", column = 1:ncol(donnees_filtrees()[['donnees_cge']]), width = -1)
@@ -146,10 +137,13 @@ shinyServer(function(input, output, session) {
       setColumnWidth(wb, sheet = "PLR", column = 1:ncol(donnees_filtrees()[['donnees_plr']]), width = -1)
       
       saveWorkbook(wb)
-      file.rename(fname,file)
     },
-    contentType="application/xlsx" 
+    contentType="application/xlsx"
+    
   )
+    
+     
+   
  
 })
 
